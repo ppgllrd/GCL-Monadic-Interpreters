@@ -71,14 +71,14 @@ sem (If gs) = do
   rho <- readMon
   ss <- select rho gs
   case ss of
-		[]  -> fail "Program aborted: all guards are false"
-		ss -> foldr1 mplus . map sem  $  ss
+    []  -> fail "Program aborted: all guards are false"
+    ss -> foldr1 mplus . map sem  $  ss
 sem (Do gs) = do
   rho <- readMon
   ss <- select rho gs
   case ss of
-		[]  -> return ()
-		ss  -> foldr1 mplus . map (sem . (:$ Do gs))  $  ss
+    []  -> return ()
+    ss  -> foldr1 mplus . map (sem . (:$ Do gs))  $  ss
 
 -- Running a program. Prints out final environment
 run :: Command -> IO ()
@@ -101,3 +101,4 @@ run prog = sequence_ [ putStrLn (showResult r)
 --------------------------------------------------------------------------------
 
 main = sequence_ [ do run e; putStr "\n" | e <- examples ]
+

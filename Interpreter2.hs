@@ -7,7 +7,7 @@
 -- Second version. Uses state transformer monad to propagate environments
 --
 -- Drawbacks: * Language is deterministic
---			      * Errors abort interpreter execution
+--            * Errors abort interpreter execution
 --------------------------------------------------------------------------------
 
 import qualified Environment as Env
@@ -65,14 +65,14 @@ sem (If gs) = do
   rho <- readMon
   ss <- select rho gs
   case ss of
-		[]  -> fail "Program aborted: all guards are false"
-		s:_ -> sem s
+    []  -> fail "Program aborted: all guards are false"
+    s:_ -> sem s
 sem (Do gs) = do
   rho <- readMon
   ss <- select rho gs
   case ss of
-		[]  -> return ()
-		s:_ -> sem (s :$ Do gs)
+    []  -> return ()
+    s:_ -> sem (s :$ Do gs)
 
 -- Running a program. Prints out final environment
 run :: Command -> IO ()
@@ -90,3 +90,4 @@ run prog = printEnv rho `catch` \error -> print (error :: ErrorCall)
 --------------------------------------------------------------------------------
 
 main = sequence_ [ do run e; putStr "\n" | e <- examples ]
+

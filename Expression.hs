@@ -51,9 +51,9 @@ eval rho (e1 :+ e2)  = operateIxIxI rho e1 (+) e2
 eval rho (e1 :- e2)  = operateIxIxI rho e1 (-) e2
 eval rho (e1 :* e2)  = operateIxIxI rho e1 (*) e2
 eval rho (e1 :/ e2)  = do
-	I v1 <- eval rho e1
-	I v2 <- eval rho e2
-	if v2==0 then fail "Division by zero" else return (I (div v1 v2))
+  I v1 <- eval rho e1
+  I v2 <- eval rho e2
+  if v2==0 then fail "Division by zero" else return (I (div v1 v2))
 eval rho (e1 :> e2)  = operateIxIxB rho e1 (>)  e2
 eval rho (e1 :== e2) = operateIxIxB rho e1 (==) e2
 eval rho (e1 :/\ e2) = operateBxBxB rho e1 (&&) e2
@@ -64,9 +64,9 @@ type BxBxB = Bool -> Bool -> Bool
 
 operateIxI :: (Monad m) => (a -> Value) -> Environment -> Expr -> (Int -> Int -> a) -> Expr -> m Value
 operateIxI constr rho e1 op e2 = do
-	I v1 <- eval rho e1
-	I v2 <- eval rho e2
-	return (constr (v1 `op` v2))
+  I v1 <- eval rho e1
+  I v2 <- eval rho e2
+  return (constr (v1 `op` v2))
 
 operateIxIxI :: (Monad m) => Environment -> Expr -> IxIxI -> Expr -> m Value
 operateIxIxI = operateIxI I
@@ -76,6 +76,6 @@ operateIxIxB = operateIxI B
 
 operateBxBxB :: (Monad m) => Environment -> Expr -> BxBxB -> Expr -> m Value
 operateBxBxB rho e1 op e2 = do
-	B v1 <- eval rho e1
-	B v2 <- eval rho e2
-	return (B (v1 `op` v2))
+  B v1 <- eval rho e1
+  B v2 <- eval rho e2
+  return (B (v1 `op` v2))
